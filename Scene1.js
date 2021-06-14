@@ -30,17 +30,18 @@ class Scene1 extends Phaser.Scene {
         
         // Cartes
         
-        this.map = this.make.tilemap({ key: 'start' });
-        this.tileset = this.map.addTilesetImage('oe', 'tilesets');
+        this.map = this.make.tilemap({ key: 'level1' });
+        this.tileset = this.map.addTilesetImage('tileset', 'tileset');
 
         this.ground = this.map.createStaticLayer('ground', this.tileset, 0, 0);
-        this.environment = this.map.createDynamicLayer('environment', this.tileset, 0, 0);
-        this.easter_egg = this.map.createDynamicLayer('easter_egg', this.tileset, 0, 0);
+        this.props = this.map.createDynamicLayer('props', this.tileset, 0, 0);
         
         
         // Inputs clavier
         
         this.cursors = this.input.keyboard.createCursorKeys();
+        this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         
         
