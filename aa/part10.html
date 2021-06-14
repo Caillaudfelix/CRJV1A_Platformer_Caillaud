@@ -1,0 +1,54 @@
+<!doctype html> 
+<html lang="en"> 
+<head> 
+    <meta charset="UTF-8" />
+    <title>GD1A_AVENTURE_CAILLAUD</title>
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
+    <script type="text/javascript" src= "Scene1.js"></script>
+    <script type="text/javascript" src= "Scene2.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<script type="text/javascript">
+
+
+// Variables
+
+var inputP = [false, false, false, false, false];
+var color = '#000';
+var xAxis = 0;
+var yAxis = 0; 
+var vieJoueur = 3;
+var direction = "down";;
+var recovery = false;
+var timerRecovery = 0;
+var gameOver = false;
+
+var config = {
+    type: Phaser.AUTO,
+    width: 3200,
+    height: 1600,
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { y: 0 },
+            debug: false
+        }
+    },
+    input: {gamepad:true},
+    scene: [Scene1, Scene2]
+};
+
+    
+var game = new Phaser.Game(config);
+
+    
+</script>
+
+</body>
+</html>
