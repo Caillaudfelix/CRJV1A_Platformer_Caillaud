@@ -3,10 +3,9 @@
 <head> 
     <meta charset="UTF-8" />
     <title>The Breath of Freedom</title>
-    <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.js"></script>
     <script type="text/javascript" src= "Scene1.js"></script>
     <script type="text/javascript" src= "Scene2.js"></script>
-    <script type="text/javascript" src= "Scene3.js"></script>
     <style type="text/css">
         body {
             margin: 0;
@@ -26,6 +25,7 @@ var xAxis = 0;
 var yAxis = 0; 
 var playerHealth = 3;
 var direction = "down";
+var cursors;
 var recovery = false;
 var timerRecovery = 0;
 var gameOver = false;
@@ -37,12 +37,12 @@ var config = {
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 0 },
+            gravity: { y: 400 },
             debug: true
         }
     },
     input: {gamepad:true},
-    scene: [Scene1, Scene2, Scene3]
+    scene: [Scene1, Scene2]
 };
 
     
