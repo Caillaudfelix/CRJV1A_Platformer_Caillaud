@@ -16,6 +16,7 @@ class Scene1 extends Phaser.Scene {
         this.load.image('firePower', "assets/firePowerUpButton.png");
         this.load.image('thunderPower', "assets/thunderPowerUpButton.png");
         this.load.image('key', "assets/key.png");
+        this.load.image('gameOverScreen', "assets/gameOverScreen.png");
     }
     
     
@@ -29,10 +30,10 @@ class Scene1 extends Phaser.Scene {
         const map = this.make.tilemap({ key: 'level1part1' });
         const tileset = map.addTilesetImage('tileset', 'tiles');
 
-        const background = map.createLayer('background', tileset, 0, 0);
-        const ground = map.createLayer('ground', tileset, 0, 0);
-        const props = map.createLayer('props', tileset, 0, 0);
-        const electricthing = map.createLayer('electricthing', tileset, 0, 0);
+        const background = map.createLayer('background', tileset, 0, 0).setDepth(-3);
+        const ground = map.createLayer('ground', tileset, 0, 0).setDepth(-2);
+        const props = map.createLayer('props', tileset, 0, 0).setDepth(-1);
+        const electricthing = map.createLayer('electricthing', tileset, 0, 0).setDepth(0);
         
 
         // Inputs clavier
@@ -44,7 +45,7 @@ class Scene1 extends Phaser.Scene {
         // Personnage
         
         this.player = this.physics.add.sprite(230, 180, 'player');
-        this.player.setCollideWorldBounds(true);
+        //this.player.setCollideWorldBounds(true);
         
         
         // Ennemis
@@ -61,14 +62,12 @@ class Scene1 extends Phaser.Scene {
             key: 'left',
             frames: this.anims.generateFrameNumbers('player', { start: 0, end: 3 }),
             frameRate: 7,
-            repeat: -1,
         });
 
         this.anims.create({
             key: 'run',
             frames: this.anims.generateFrameNumbers('player', { start: 4, end: 7 }),
             frameRate: 7,
-            repeat: -1,
         });
         
         
@@ -83,6 +82,8 @@ class Scene1 extends Phaser.Scene {
         ground.setCollisionByProperty({collides:true}); 
         this.physics.add.collider(this.player, ground);
         this.physics.add.overlap(this.player, this.enemy, this.hitEnemy, null, this);
+        electricthing.setCollisionByProperty({collides:true}); 
+        this.physics.add.collider(this.player, electricthing);
         
         
         // Tweens
@@ -116,11 +117,13 @@ class Scene1 extends Phaser.Scene {
         this.camera = this.cameras.main.setSize(896,448);
         this.camera.startFollow(this.player, true, 0.08, 0.08);
         this.camera.setBounds(0, 0, 2400, 960);
+        this.cameras.main.startFollow(this.player);
+        this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
 
         }
     
-    
+
     // Update
     
     update(){
@@ -213,9 +216,10 @@ class Scene1 extends Phaser.Scene {
             gameOver = true;
         }
     
-        if (this.player.y >= 1400)
+        if (this.player.y >= 1000)
         {
             playerHealth = 0;
+            gameOver = true;
         }
     
     
