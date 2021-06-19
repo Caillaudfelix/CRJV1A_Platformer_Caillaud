@@ -245,11 +245,13 @@ class level1 extends Phaser.Scene {
             this.healthBar.anims.play('dead');
             this.player.destroy();
             gameOver = true;
+            this.scene.start('gameOverScreen');
         }
     
         if(this.player.y >= 1000)
         {
             playerHealth = 0;
+            this.scene.start('gameOverScreen');
         }
     
         

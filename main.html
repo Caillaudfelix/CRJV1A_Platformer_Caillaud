@@ -8,7 +8,8 @@
     <script type="text/javascript" src= "commandsMenu.js"></script>
     <script type="text/javascript" src= "level1.js"></script>
     <script type="text/javascript" src= "level2.js"></script>
-    <script type="text/javascript" src= "level3.js"></script>    
+    <script type="text/javascript" src= "level3.js"></script> 
+    <script type="text/javascript" src= "gameOverScreen.js"></script> 
     <style>
         html,
         body,
@@ -63,7 +64,7 @@ var config = {
         arcade: {
             gravity: { y: 400 },
             debug: true}},
-    scene: [menu, commandsMenu, level1, level2, level3],
+    scene: [Menu, commandsMenu, level1, level2, level3, gameOverScreen],
     input:{gamepad:true},
 };
     
