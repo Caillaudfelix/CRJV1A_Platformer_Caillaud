@@ -4,12 +4,31 @@
     <meta charset="UTF-8" />
     <title>The Breath of Freedom</title>
     <script src="//cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.js"></script>
-    <script type="text/javascript" src= "Scene1.js"></script>
-    <script type="text/javascript" src= "Scene2.js"></script>
-    <style type="text/css">
-        body {
+    <script type="text/javascript" src= "Menu.js"></script>    
+    <script type="text/javascript" src= "commandsMenu.js"></script>
+    <script type="text/javascript" src= "level1.js"></script>
+    <script type="text/javascript" src= "level2.js"></script>
+    <script type="text/javascript" src= "level3.js"></script>    
+    <style>
+        html,
+        body,
+        #game-container {
             margin: 0;
+            padding: 0;
         }
+        
+        #game-container {
+          min-width: 100vw;
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+  
+        #game-container > canvas {
+          border-radius: 5px;
+        }
+        
     </style>
 </head>
 <body>
@@ -24,26 +43,39 @@ var color = '#000';
 var xAxis = 0;
 var yAxis = 0; 
 var playerHealth = 3;
-var direction = "down";
 var cursors;
+var fireButton;
+var bolt = true;
 var recovery = false;
 var timerRecovery = 0;
+var enemyHealth = 0;
 var gameOver = false;
+var victory = false;
+
 
 var config = {
     type: Phaser.AUTO,
     width: 896,
     height: 448,
+    parent: "game-container",
     physics: {
         default: 'arcade',
         arcade: {
             gravity: { y: 400 },
-            debug: true
-        }
-    },
-    input: {gamepad:true},
-    scene: [Scene1, Scene2]
+            debug: true}},
+    scene: [Menu, commandsMenu, level1, level2, level3],
+    input:{gamepad:true},
 };
+    
+   
+// Create
+    
+function create ()
+{
+    cursors = this.imput.keyboard.createCursorKeys();
+    player.setCollideWorldBounds(true);
+    this.scene.start("menu")
+}
 
     
 var game = new Phaser.Game(config);
