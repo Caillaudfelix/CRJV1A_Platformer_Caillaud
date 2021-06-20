@@ -22,7 +22,7 @@ class commandsMenu extends Phaser.Scene {
 
         this.add.image(0,0, "commandsScreen").setOrigin(0).setDepth(0);
         
-        let backButton = this.add.image(this.game.renderer.width / 2 - 400, this.game.renderer.height / 2 - 160, "backButton").setDepth(1);
+        let backButton = this.add.image(this.game.renderer.width / 2 - 380, this.game.renderer.height / 2 - 160, "backButton").setDepth(1);
 
         backButton.setInteractive();
         

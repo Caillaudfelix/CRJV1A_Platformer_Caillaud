@@ -18,9 +18,6 @@ class level1 extends Phaser.Scene {
         this.load.image('fireBolt', 'assets/fireBolt.png');
         this.load.spritesheet('enemy1', "assets/enemy1.png", { frameWidth: 25, frameHeight: 33});
         this.load.spritesheet('enemy2', "assets/enemy2.png", { frameWidth: 18, frameHeight: 32});
-        this.load.spritesheet('enemy3', "assets/enemy3.png", { frameWidth: 37, frameHeight: 36});
-        this.load.spritesheet('boss', "assets/boss.png", { frameWidth: 29, frameHeight: 36});
-        this.load.image('key', "assets/key.png");
         this.load.image('gameOverScreen', "assets/gameOverScreen.png");
     }
     
@@ -54,8 +51,8 @@ class level1 extends Phaser.Scene {
         
         // Pouvoirs
         
-        this.fireAttack = this.physics.add.group();
-        this.fireButton = this.input.keyboard.addKey('A');
+        this.groupeBdn = this.physics.add.group({allowGravity: false,immovable: true});
+        this.boutonFeu = this.input.keyboard.addKey('A');
         
         
         // Ennemis
@@ -99,12 +96,12 @@ class level1 extends Phaser.Scene {
         this.physics.add.collider(this.player, ground);
         electricthing.setCollisionByProperty({collides:true}); 
         this.physics.add.collider(this.player, electricthing, this.hitElectricThing, null, this);
-        this.physics.add.collider(this.enemy1,ground,);
+        this.physics.add.collider(this.enemy1,ground);
         this.physics.add.overlap(this.player, this.enemy1, this.hitEnemy1, null, this);
-        this.physics.add.collider(this.enemy1,ground,);
+        this.physics.add.collider(this.enemy1,ground);
         this.physics.add.overlap(this.player, this.enemy2, this.hitEnemy2, null, this);
-        this.physics.add.collider(this.enemy1,ground,);
-        this.physics.add.overlap(this.player, this.enemy3, this.hitEnemy3, null, this);
+        this.physics.add.collider(this.groupeBdn, this.enemy1, this.hit);
+        this.physics.add.overlap(this.groupeBdn, this.enemy1, this.hit, null, this);
         
         
         // Tweens
@@ -200,11 +197,11 @@ class level1 extends Phaser.Scene {
         
         // Détection activation pouvoirs
         
-        if (Phaser.Input.Keyboard.JustDown(this.fireButton)) 
+        if ( Phaser.Input.Keyboard.JustDown(this.boutonFeu)) 
         {
-            if (this.bolt == true)
+            if (boule == true)
             {
-                shoot(player);
+                this.tirer(this.player);
             }
         }
         
@@ -258,23 +255,20 @@ class level1 extends Phaser.Scene {
     }
 
     
-    shoot(player)
-    {
+    tirer(player) {
         var coefDir;
-        if (player.direction == 'left') { coefDir = -1; } else { coefDir = 1 }
-        var fireAttack = this.fireAttack.create(player.x + (25 * coefDir), player.y - 4, 'fireBolt');
-        fireBolt.setCollideWorldBounds(false);
-        fireBolt.body.allowGravity = true;
-        fireBolt.setVelocity(500 * coefDir, -400);
+        if (this.player.direction == 'left') { coefDir = -1; } else { coefDir = 1 }
+        // on crée la balle a coté du joueur
+        this.fireBolt = this.groupeBdn.create(this.player.x + (25 * coefDir), this.player.y - 4, 'fireBolt');
+        // parametres physiques de la balle.
+        this.fireBolt.setVelocity(300 * coefDir, 0); // vitesse en x et en y
     }
 
-    hit (fireBolt, enemy1)
-    {
-    fireBolt.destroy();
-    enemy1.enemyHealth--;
-        if (enemy1.enemyHealth==0)
-        {
-        enemy1.destroy();
+    hit (fireBolt, enemy1) {
+    this.fireBolt.destroy();
+    this.enemy1.enemyHealth--;
+        if (this.enemy1.enemyHealth==0) {
+        this.enemy1.destroy();
         }
     }
     
