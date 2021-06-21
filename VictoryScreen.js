@@ -1,7 +1,7 @@
 class victoryScreen extends Phaser.Scene {
     
     constructor(){
-        super('victoryScreen')
+        super('VictoryScreen')
     }
 
     
