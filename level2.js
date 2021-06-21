@@ -73,12 +73,12 @@ class level2 extends Phaser.Scene {
         
         // Ennemis
         
-        this.enemy1 = this.physics.add.group({immovable: true});
-        this.enemy1.create(400, 685, 'enemy1');
-        this.enemy2 = this.physics.add.group({immovable: true});
-        this.enemy2.create(1770, 400, 'enemy2');
-        this.enemy3 = this.physics.add.group({immovable: true});
-        this.enemy3.create(2300, 200, 'enemy1');
+        this.enemy4 = this.physics.add.group({immovable: true});
+        this.enemy4.create(400, 685, 'enemy1');
+        this.enemy5 = this.physics.add.group({immovable: true});
+        this.enemy5.create(1770, 400, 'enemy2');
+        this.enemy6 = this.physics.add.group({immovable: true});
+        this.enemy6.create(2300, 200, 'enemy1');
         
         
         // Caisses à brûler / clé
@@ -122,29 +122,29 @@ class level2 extends Phaser.Scene {
         ground.setCollisionByProperty({collides:true}); 
         this.physics.add.collider(this.player, ground);
         
-        this.physics.add.collider(this.enemy1, ground);
+        this.physics.add.collider(this.enemy4, ground);
         
         this.physics.add.collider(this.keys, ground);
         this.physics.add.overlap(this.player, this.keys, this.collectKey, null, this);
         
-        this.physics.add.overlap(this.player, this.enemy1, this.hitEnemy1, null, this);
-        this.physics.add.collider(this.fireGroup, this.enemy1, this.hit1);
-        this.physics.add.overlap(this.fireGroup, this.enemy1, this.hit1, null, this);
+        this.physics.add.overlap(this.player, this.enemy4, this.hitEnemy4, null, this);
+        this.physics.add.collider(this.fireGroup, this.enemy4, this.hit4);
+        this.physics.add.overlap(this.fireGroup, this.enemy4, this.hit4, null, this);
         
         this.physics.add.collider(this.crates, ground);
         this.physics.add.collider(this.player, this.crates);
         this.physics.add.collider(this.fireGroup, this.crates, this.crateHit);
         this.physics.add.overlap(this.fireGroup, this.crates, this.crateHit, null, this);
         
-        this.physics.add.collider(this.enemy2, ground);
-        this.physics.add.overlap(this.player, this.enemy2, this.hitEnemy2, null, this);
-        this.physics.add.collider(this.fireGroup, this.enemy2, this.hit2);
-        this.physics.add.overlap(this.fireGroup, this.enemy2, this.hit2, null, this);
+        this.physics.add.collider(this.enemy5, ground);
+        this.physics.add.overlap(this.player, this.enemy5, this.hitenemy5, null, this);
+        this.physics.add.collider(this.fireGroup, this.enemy5, this.hit5);
+        this.physics.add.overlap(this.fireGroup, this.enemy5, this.hit5, null, this);
         
-        this.physics.add.collider(this.enemy3, ground);
-        this.physics.add.overlap(this.player, this.enemy3, this.hitEnemy1, null, this);
-        this.physics.add.collider(this.fireGroup, this.enemy3, this.hit3);
-        this.physics.add.overlap(this.fireGroup, this.enemy3, this.hit3, null, this);
+        this.physics.add.collider(this.enemy6, ground);
+        this.physics.add.overlap(this.player, this.enemy6, this.hitEnemy6, null, this);
+        this.physics.add.collider(this.fireGroup, this.enemy6, this.hit6);
+        this.physics.add.overlap(this.fireGroup, this.enemy6, this.hit6, null, this);
         
         this.physics.add.collider(this.player, this.worldBorderLeft);
         this.physics.add.collider(this.player, this.worldBorderTop);
@@ -155,7 +155,7 @@ class level2 extends Phaser.Scene {
         
         var move = this;
 
-        this.enemy1.children.iterate(function (child) {
+        this.enemy4.children.iterate(function (child) {
             move.tweens.add({
                 targets: child,
                 x: 210,
@@ -166,7 +166,7 @@ class level2 extends Phaser.Scene {
             });
         })
         
-        this.enemy2.children.iterate(function (child) {
+        this.enemy5.children.iterate(function (child) {
             move.tweens.add({
                 targets: child,
                 x: 1460,
@@ -177,7 +177,7 @@ class level2 extends Phaser.Scene {
             });
         })
         
-        this.enemy3.children.iterate(function (child) {
+        this.enemy6.children.iterate(function (child) {
             move.tweens.add({
                 targets: child,
                 x: 2100,
@@ -382,30 +382,30 @@ class level2 extends Phaser.Scene {
     
     // Dégâts ennemis / objets
     
-    hit1 (fireBolt, enemy1)
+    hit4 (fireBolt, enemy4)
     {
     fireBolt.destroy();
-    enemy1Health = enemy1Health - 1;
-        if (enemy1Health == 0) {
-        enemy1.destroy();
+    enemy4Health = enemy4Health - 1;
+        if (enemy4Health == 0) {
+        enemy4.destroy();
         }
     }
     
-    hit2 (fireBolt, enemy2)
+    hit5 (fireBolt, enemy5)
     {
     fireBolt.destroy();
-    enemy2Health = enemy2Health - 1;
-        if (enemy2Health == 0) {
-        enemy2.destroy();
+    enemy5Health = enemy5Health - 1;
+        if (enemy5Health == 0) {
+        enemy5.destroy();
         }
     }
     
-    hit3 (fireBolt, enemy3)
+    hit6 (fireBolt, enemy6)
     {
     fireBolt.destroy();
-    enemy3Health = enemy3Health - 1;
-        if (enemy3Health == 0) {
-        enemy3.destroy();
+    enemy6Health = enemy6Health - 1;
+        if (enemy6Health == 0) {
+        enemy6.destroy();
         }
     }
     
@@ -418,7 +418,7 @@ class level2 extends Phaser.Scene {
     
     // Collision ennemis 
     
-    hitEnemy1 (player, enemy1)
+    hitEnemy4 (player, enemy4)
     {
         if (playerHealth > 0 && recovery == false)
         {
@@ -428,11 +428,20 @@ class level2 extends Phaser.Scene {
     }
     
     
-    hitEnemy2 (player, enemy2)
+    hitEnemy5 (player, enemy5)
     {
         if (playerHealth > 0 && recovery == false)
         {
             playerHealth = playerHealth - 2;
+            recovery = true;
+        }
+    }
+    
+    hitEnemy6 (player, enemy6)
+    {
+        if (playerHealth > 0 && recovery == false)
+        {
+            playerHealth = playerHealth - 1;
             recovery = true;
         }
     }

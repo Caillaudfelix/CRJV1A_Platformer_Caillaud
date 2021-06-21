@@ -135,7 +135,7 @@ class level1 extends Phaser.Scene {
         this.physics.add.overlap(this.fireGroup, this.enemy2, this.hit2, null, this);
         
         this.physics.add.collider(this.enemy3, ground);
-        this.physics.add.overlap(this.player, this.enemy3, this.hitEnemy1, null, this);
+        this.physics.add.overlap(this.player, this.enemy3, this.hitEnemy3, null, this);
         this.physics.add.collider(this.fireGroup, this.enemy3, this.hit3);
         this.physics.add.overlap(this.fireGroup, this.enemy3, this.hit3, null, this);
         
@@ -426,6 +426,15 @@ class level1 extends Phaser.Scene {
         if (playerHealth > 0 && recovery == false)
         {
             playerHealth = playerHealth - 2;
+            recovery = true;
+        }
+    }
+    
+    hitEnemy1 (player, enemy1)
+    {
+        if (playerHealth > 0 && recovery == false)
+        {
+            playerHealth = playerHealth - 1;
             recovery = true;
         }
     }
