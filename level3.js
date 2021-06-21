@@ -494,7 +494,7 @@ class level3 extends Phaser.Scene {
     
     finish (player, endGameBorder)
     {
-        this.scene.start('VictoryScreen');
+        this.scene.start('victoryScreen');
     }
     
     
