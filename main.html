@@ -4,12 +4,13 @@
     <meta charset="UTF-8" />
     <title>The Breath of Freedom</title>
     <script src="//cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.js"></script>
-    <script type="text/javascript" src= "menu.js"></script>    
-    <script type="text/javascript" src= "commandsMenu.js"></script>
-    <script type="text/javascript" src= "level1.js"></script>
-    <script type="text/javascript" src= "level2.js"></script>
-    <script type="text/javascript" src= "level3.js"></script> 
-    <script type="text/javascript" src= "gameOverScreen.js"></script> 
+    <script type="text/javascript" src= "Menu.js"></script>    
+    <script type="text/javascript" src= "CommandsMenu.js"></script>
+    <script type="text/javascript" src= "Level1.js"></script>
+    <script type="text/javascript" src= "Level2.js"></script>
+    <script type="text/javascript" src= "Level3.js"></script> 
+    <script type="text/javascript" src= "GameOverScreen.js"></script> 
+    <script type="text/javascript" src= "VictoryScreen.js"></script> 
     <style>
         html,
         body,
@@ -47,14 +48,19 @@ var playerHealth = 3;
 var cursors;
 var airButton;
 var fireButton;
-var bolt = true;
+var thunderButton;
+var fBolt = true;
+var tBolt = true;
 var noAirPower = false;
 var noFirePower = false;
+var noThunderPower = false;
 var recovery = false;
 var timerRecovery = 0;
 var enemy1Health = 2;
 var enemy2Health = 2;
 var enemy3Health = 2;
+var enemy4Health = 4;
+var bossHealth = 10;
 var gameOver = false;
 var victory = false;
 
@@ -69,7 +75,7 @@ var config = {
         arcade: {
             gravity: { y: 400 },
             debug: true}},
-    scene: [Menu, CommandsMenu, Level1, Level2, Level3, GameOverScreen],
+    scene: [Menu, CommandsMenu, Level1, Level2, Level3, GameOverScreen, VictoryScreen],
     input:{gamepad:true},
 };
     

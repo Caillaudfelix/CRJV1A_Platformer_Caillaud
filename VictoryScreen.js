@@ -1,14 +1,14 @@
-class GameOverScreen extends Phaser.Scene {
+class VictoryScreen extends Phaser.Scene {
     
     constructor(){
-        super('gameOverScreen')
+        super('victoryScreen')
     }
 
     
     // Preload //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     preload(){
-        this.load.image('gameOverScreen', "assets/gameOverScreen.png")
+        this.load.image('victoryScreen', "assets/victoryScreen.png")
 	}
 
     
@@ -19,10 +19,10 @@ class GameOverScreen extends Phaser.Scene {
 
         // Ajout du fond
 
-        this.add.image(0,0, "gameOverScreen").setOrigin(0).setDepth(0);
+        this.add.image(0,0, "victoryScreen").setOrigin(0).setDepth(0);
         
-        
-        }
 
+        }
     
-}
+    
+}   
