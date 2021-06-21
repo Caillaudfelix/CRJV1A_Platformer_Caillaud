@@ -45,11 +45,16 @@ var xAxis = 0;
 var yAxis = 0; 
 var playerHealth = 3;
 var cursors;
-var boutonFeu;
-var boule = true;
+var airButton;
+var fireButton;
+var bolt = true;
+var noAirPower = false;
+var noFirePower = false;
 var recovery = false;
 var timerRecovery = 0;
-var enemyHealth = 1;
+var enemy1Health = 2;
+var enemy2Health = 2;
+var enemy3Health = 2;
 var gameOver = false;
 var victory = false;
 
@@ -69,7 +74,7 @@ var config = {
 };
     
    
-// Create
+// Create //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
 function create ()
 {

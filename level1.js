@@ -5,24 +5,28 @@ class level1 extends Phaser.Scene {
     }
     
     
-    // Preload
+    // Preload //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     preload(){
         this.load.image('tiles', 'assets/tileset.png');
         this.load.tilemapTiledJSON('level1part1', 'level1.json');
+        this.load.image('worldBorderLeft', 'assets/worldBorderLeft.png');
+        this.load.image('worldBorderTop', 'assets/worldBorderTop.png');
+        this.load.image('nextLevelBorder', 'assets/nextLevelBorder.png');
         this.load.spritesheet('player', "assets/player.png", { frameWidth: 27, frameHeight: 33 });
         this.load.spritesheet('health', "assets/health.png", { frameWidth: 263, frameHeight: 77});
         this.load.spritesheet('airPower', "assets/airPowerUpButton.png", { frameWidth: 106, frameHeight: 103});
         this.load.spritesheet('firePower', "assets/firePowerUpButton.png", { frameWidth: 56, frameHeight: 53});
         this.load.spritesheet('thunderPower', "assets/thunderPowerUpButton.png", { frameWidth: 56, frameHeight: 53});
         this.load.image('fireBolt', 'assets/fireBolt.png');
+        this.load.image('crate', 'assets/crate.png');
         this.load.spritesheet('enemy1', "assets/enemy1.png", { frameWidth: 25, frameHeight: 33});
         this.load.spritesheet('enemy2', "assets/enemy2.png", { frameWidth: 18, frameHeight: 32});
         this.load.image('gameOverScreen', "assets/gameOverScreen.png");
     }
     
     
-    // Create
+    // Create //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     create(){
         
@@ -37,11 +41,20 @@ class level1 extends Phaser.Scene {
         const props = map.createLayer('props', tileset, 0, 0).setDepth(-1);
         const electricthing = map.createLayer('electricthing', tileset, 0, 0).setDepth(0);
         
+        
+        // Bordures du monde
+        
+        this.worldBorderLeft = this.physics.add.group({allowGravity: false, immovable: true});
+        this.worldBorderLeft.create(-17, 463, 'worldBorderLeft');
+        this.worldBorderTop = this.physics.add.group({allowGravity: false, immovable: true});
+        this.worldBorderTop.create(1200, -17, 'worldBorderTop');
+        this.nextLevelBorder = this.physics.add.group({allowGravity: false, immovable: true});
+        this.nextLevelBorder.create(2417, 463, 'nextLevelBorder');
 
+        
         // Inputs clavier
         
         this.cursors = this.input.keyboard.createCursorKeys();
-        this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         
         
         // Personnage
@@ -51,15 +64,26 @@ class level1 extends Phaser.Scene {
         
         // Pouvoirs
         
-        this.groupeBdn = this.physics.add.group({allowGravity: false,immovable: true});
-        this.boutonFeu = this.input.keyboard.addKey('A');
+        this.airButton = this.input.keyboard.addKey('SPACE');
+        this.fireGroup = this.physics.add.group({allowGravity: false, immovable: true});
+        this.fireButton = this.input.keyboard.addKey('A');
         
         
         // Ennemis
         
         this.enemy1 = this.physics.add.group({immovable: true});
-        this.enemy1.create(585, 625, 'enemy1')
+        this.enemy1.create(400, 685, 'enemy1');
+        this.enemy2 = this.physics.add.group({immovable: true});
+        this.enemy2.create(1770, 400, 'enemy2');
+        this.enemy3 = this.physics.add.group({immovable: true});
+        this.enemy3.create(2300, 200, 'enemy1');
         
+        
+        // Caisses à brûler
+        
+        this.crates = this.physics.add.group({immovable: true});
+        this.crates.create(880, 410, 'crate');
+
         
         // Interface
         
@@ -96,12 +120,25 @@ class level1 extends Phaser.Scene {
         this.physics.add.collider(this.player, ground);
         electricthing.setCollisionByProperty({collides:true}); 
         this.physics.add.collider(this.player, electricthing, this.hitElectricThing, null, this);
-        this.physics.add.collider(this.enemy1,ground);
+        this.physics.add.collider(this.enemy1, ground);
         this.physics.add.overlap(this.player, this.enemy1, this.hitEnemy1, null, this);
-        this.physics.add.collider(this.enemy1,ground);
+        this.physics.add.collider(this.fireGroup, this.enemy1, this.hit1);
+        this.physics.add.overlap(this.fireGroup, this.enemy1, this.hit1, null, this);
+        this.physics.add.collider(this.crates, ground);
+        this.physics.add.collider(this.player, this.crates);
+        this.physics.add.collider(this.fireGroup, this.crates, this.crateHit);
+        this.physics.add.overlap(this.fireGroup, this.crates, this.crateHit, null, this);
+        this.physics.add.collider(this.enemy2, ground);
         this.physics.add.overlap(this.player, this.enemy2, this.hitEnemy2, null, this);
-        this.physics.add.collider(this.groupeBdn, this.enemy1, this.hit);
-        this.physics.add.overlap(this.groupeBdn, this.enemy1, this.hit, null, this);
+        this.physics.add.collider(this.fireGroup, this.enemy2, this.hit2);
+        this.physics.add.overlap(this.fireGroup, this.enemy2, this.hit2, null, this);
+        this.physics.add.collider(this.enemy3, ground);
+        this.physics.add.overlap(this.player, this.enemy3, this.hitEnemy1, null, this);
+        this.physics.add.collider(this.fireGroup, this.enemy3, this.hit3);
+        this.physics.add.overlap(this.fireGroup, this.enemy3, this.hit3, null, this);
+        this.physics.add.collider(this.player, this.worldBorderLeft);
+        this.physics.add.collider(this.player, this.worldBorderTop);
+        this.physics.add.collider(this.player, this.nextLevelBorder, this.changeLevel, null, this);  
         
         
         // Tweens
@@ -111,7 +148,29 @@ class level1 extends Phaser.Scene {
         this.enemy1.children.iterate(function (child) {
             move.tweens.add({
                 targets: child,
-                x: 500,
+                x: 210,
+                duration: 2000,
+                paused: false,
+                yoyo: true,
+                repeat: -1
+            });
+        })
+        
+        this.enemy2.children.iterate(function (child) {
+            move.tweens.add({
+                targets: child,
+                x: 1460,
+                duration: 2000,
+                paused: false,
+                yoyo: true,
+                repeat: -1
+            });
+        })
+        
+        this.enemy3.children.iterate(function (child) {
+            move.tweens.add({
+                targets: child,
+                x: 2100,
                 duration: 2000,
                 paused: false,
                 yoyo: true,
@@ -152,11 +211,18 @@ class level1 extends Phaser.Scene {
         this.cameras.main.startFollow(this.player);
 
         
+        // Sortie de zone
+        
+        if(this.player.x > 1500)
+            {
+                this.scene.start('scene2');
+            }
+        
+        
     }
     
-
     
-    // Update
+    // Update //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     update(){
         
@@ -197,14 +263,18 @@ class level1 extends Phaser.Scene {
         
         // Détection activation pouvoirs
         
-        if ( Phaser.Input.Keyboard.JustDown(this.boutonFeu)) 
+        if ( Phaser.Input.Keyboard.JustDown(this.fireButton)) 
         {
-            if (boule == true)
+            if (bolt == true)
             {
-                this.tirer(this.player);
+                this.shoot(this.player);
             }
         }
         
+        if ( Phaser.Input.Keyboard.JustDown(this.airButton)) 
+        {
+            this.superJump(this.player);
+        }
         
         // Barre de vie
 
@@ -255,33 +325,65 @@ class level1 extends Phaser.Scene {
     }
 
     
-    tirer(player) {
+    // Super saut
+    
+    superJump(player)
+    {
+        if (noAirPower == false)
+        {
+            noAirPower = true;
+            this.player.setVelocityY(-400);
+            this.cooldown = this.time.addEvent({ delay : 2000, callback: function(){noAirPower = false}, callbackScope: this});
+        }
+    }
+    
+    
+    // Boule de feu
+    
+    shoot(player)
+    {
         var coefDir;
-        if (this.player.direction == 'left') { coefDir = -1; } else { coefDir = 1 }
-        // on crée la balle a coté du joueur
-        this.fireBolt = this.groupeBdn.create(this.player.x + (25 * coefDir), this.player.y - 4, 'fireBolt');
-        // parametres physiques de la balle.
-        this.fireBolt.setVelocity(300 * coefDir, 0); // vitesse en x et en y
+        if (noFirePower == false)
+            {
+                noFirePower = true;
+                if (this.player.direction == 'left') { coefDir = -1; } else { coefDir = 1 }
+                this.fireBolt = this.fireGroup.create(this.player.x + (25 * coefDir), this.player.y - 4, 'fireBolt');
+                this.fireBolt.setVelocity(300 * coefDir, 0);
+                this.cooldown = this.time.addEvent({ delay : 500, callback: function(){noFirePower = false}, callbackScope: this});
+            }
     }
 
-    hit (fireBolt, enemy1) {
-    this.fireBolt.destroy();
-    this.enemy1.enemyHealth--;
-        if (this.enemy1.enemyHealth==0) {
-        this.enemy1.destroy();
+    hit1 (fireBolt, enemy1)
+    {
+    fireBolt.destroy();
+    enemy1Health = enemy1Health - 1;
+        if (enemy1Health == 0) {
+        enemy1.destroy();
         }
     }
     
-    
-    // Collision barrière électrique
-    
-    hitElectricThing (player, electricthing)
+    hit2 (fireBolt, enemy2)
     {
-        if (playerHealth > 0 && recovery == false)
-        {
-            playerHealth = playerHealth - 1;
-            recovery = true;
+    fireBolt.destroy();
+    enemy2Health = enemy2Health - 1;
+        if (enemy2Health == 0) {
+        enemy2.destroy();
         }
+    }
+    
+    hit3 (fireBolt, enemy3)
+    {
+    fireBolt.destroy();
+    enemy3Health = enemy3Health - 1;
+        if (enemy3Health == 0) {
+        enemy3.destroy();
+        }
+    }
+    
+    crateHit (fireBolt, crates)
+    {
+    fireBolt.destroy();
+    crates.destroy();
     }
     
     
@@ -294,6 +396,34 @@ class level1 extends Phaser.Scene {
             playerHealth = playerHealth - 1;
             recovery = true;
         }
+    }
+    
+    
+    hitEnemy2 (player, enemy2)
+    {
+        if (playerHealth > 0 && recovery == false)
+        {
+            playerHealth = playerHealth - 2;
+            recovery = true;
+        }
+    }
+    
+    
+    hitElectricThing (player, electricthing)
+    {
+        if (playerHealth > 0 && recovery == false)
+        {
+            playerHealth = playerHealth - 1;
+            recovery = true;
+        }
+    }
+    
+    
+    // Sortie de niveau
+    
+    changeLevel (player, nextLevelBorder)
+    {
+        this.scene.start('level2');
     }
     
     
