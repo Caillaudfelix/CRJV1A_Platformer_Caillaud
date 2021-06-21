@@ -34,7 +34,7 @@ class Menu extends Phaser.Scene {
         playButton.setInteractive();
         
         playButton.on("pointerup", ()=>{
-            this.scene.start('Level1');
+            this.scene.start('level1');
         })
         
         commandsButton.setInteractive();
