@@ -423,7 +423,7 @@ class level1 extends Phaser.Scene {
     
     changeLevel (player, nextLevelBorder)
     {
-        this.scene.start('level2');
+        this.scene.start('level3');
     }
     
     
