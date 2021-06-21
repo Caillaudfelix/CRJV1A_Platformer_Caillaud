@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <title>The Breath of Freedom</title>
     <script src="//cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.js"></script>
-    <script type="text/javascript" src= "Menu.js"></script>    
+    <script type="text/javascript" src= "menu.js"></script>    
     <script type="text/javascript" src= "commandsMenu.js"></script>
     <script type="text/javascript" src= "level1.js"></script>
     <script type="text/javascript" src= "level2.js"></script>
@@ -69,7 +69,7 @@ var config = {
         arcade: {
             gravity: { y: 400 },
             debug: true}},
-    scene: [menu, commandsMenu, level1, level2, level3, gameOverScreen],
+    scene: [Menu, CommandsMenu, Level1, Level2, Level3, GameOverScreen],
     input:{gamepad:true},
 };
     
