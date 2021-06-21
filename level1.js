@@ -1,4 +1,4 @@
-class Level1 extends Phaser.Scene {
+class level1 extends Phaser.Scene {
     
     constructor(){
         super("Level1");
@@ -21,7 +21,6 @@ class Level1 extends Phaser.Scene {
         this.load.image('fireBolt', 'assets/fireBolt.png');
         this.load.image('thunderBolt', 'assets/thunderBolt.png');
         this.load.image('crate', 'assets/crate.png');
-        this.load.image('electricThing', "assets/electricThing.png");
         this.load.spritesheet('enemy1', "assets/enemy1.png", { frameWidth: 25, frameHeight: 33});
         this.load.spritesheet('enemy2', "assets/enemy2.png", { frameWidth: 18, frameHeight: 32});
     }
@@ -81,13 +80,10 @@ class Level1 extends Phaser.Scene {
         this.enemy3.create(2300, 200, 'enemy1');
         
         
-        // Caisses à brûler / barrière à désactiver
+        // Caisses à brûler
         
         this.crates = this.physics.add.group({immovable: true});
         this.crates.create(880, 410, 'crate');
-        
-        this.electricThing = this.physics.add.group({immovable: true});
-        this.electricThing.create(725, 60, 'electricThing');
 
         
         // Interface
@@ -122,24 +118,27 @@ class Level1 extends Phaser.Scene {
         
         ground.setCollisionByProperty({collides:true}); 
         this.physics.add.collider(this.player, ground);
-        this.physics.add.collider(this.electricThing, ground);
-        this.physics.add.collider(this.player, this.electricThing, this.hitElectricThing, null, this);
         this.physics.add.collider(this.enemy1, ground);
+        
         this.physics.add.overlap(this.player, this.enemy1, this.hitEnemy1, null, this);
         this.physics.add.collider(this.fireGroup, this.enemy1, this.hit1);
         this.physics.add.overlap(this.fireGroup, this.enemy1, this.hit1, null, this);
+        
         this.physics.add.collider(this.crates, ground);
         this.physics.add.collider(this.player, this.crates);
         this.physics.add.collider(this.fireGroup, this.crates, this.crateHit);
         this.physics.add.overlap(this.fireGroup, this.crates, this.crateHit, null, this);
+        
         this.physics.add.collider(this.enemy2, ground);
         this.physics.add.overlap(this.player, this.enemy2, this.hitEnemy2, null, this);
         this.physics.add.collider(this.fireGroup, this.enemy2, this.hit2);
         this.physics.add.overlap(this.fireGroup, this.enemy2, this.hit2, null, this);
+        
         this.physics.add.collider(this.enemy3, ground);
         this.physics.add.overlap(this.player, this.enemy3, this.hitEnemy1, null, this);
         this.physics.add.collider(this.fireGroup, this.enemy3, this.hit3);
         this.physics.add.overlap(this.fireGroup, this.enemy3, this.hit3, null, this);
+        
         this.physics.add.collider(this.player, this.worldBorderLeft);
         this.physics.add.collider(this.player, this.worldBorderTop);
         this.physics.add.collider(this.player, this.nextLevelBorder, this.changeLevel, null, this);  
@@ -181,7 +180,6 @@ class Level1 extends Phaser.Scene {
                 repeat: -1
             });
         })
-        
         
         
         // Animation barre de vie
@@ -259,7 +257,6 @@ class Level1 extends Phaser.Scene {
         
         // Détection activation pouvoirs
         
-        
         if ( Phaser.Input.Keyboard.JustDown(this.airButton)) 
         {
             this.superJump(this.player);
@@ -280,7 +277,6 @@ class Level1 extends Phaser.Scene {
                 this.tShoot(this.player);
             }
         }
-        
         
         
         // Barre de vie
@@ -377,6 +373,8 @@ class Level1 extends Phaser.Scene {
     }
 
     
+    // Dégâts ennemis / objets
+    
     hit1 (fireBolt, enemy1)
     {
     fireBolt.destroy();
@@ -428,16 +426,6 @@ class Level1 extends Phaser.Scene {
         if (playerHealth > 0 && recovery == false)
         {
             playerHealth = playerHealth - 2;
-            recovery = true;
-        }
-    }
-    
-    
-    hitElectricThing (player, electricThing)
-    {
-        if (playerHealth > 0 && recovery == false)
-        {
-            playerHealth = playerHealth - 1;
             recovery = true;
         }
     }

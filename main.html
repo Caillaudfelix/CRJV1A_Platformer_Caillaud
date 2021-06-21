@@ -54,12 +54,12 @@ var tBolt = true;
 var noAirPower = false;
 var noFirePower = false;
 var noThunderPower = false;
+var key = false;
 var recovery = false;
 var timerRecovery = 0;
 var enemy1Health = 2;
 var enemy2Health = 2;
 var enemy3Health = 2;
-var enemy4Health = 4;
 var bossHealth = 10;
 var gameOver = false;
 var victory = false;
@@ -75,7 +75,7 @@ var config = {
         arcade: {
             gravity: { y: 400 },
             debug: true}},
-    scene: [Menu, CommandsMenu, Level1, Level2, Level3, GameOverScreen, VictoryScreen],
+    scene: [Menu, commandsMenu, level1, level2, level3, gameOverScreen, victoryScreen],
     input:{gamepad:true},
 };
     
